@@ -1,0 +1,12 @@
+# editor
+.cache/
+compile_commands.json
+
+# builds
+build/
+
+# cmake
+CMakeFiles
+CMakeCache.txt
+CMakeUserPresets.json
+

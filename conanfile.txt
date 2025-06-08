@@ -1,0 +1,8 @@
+[requires]
+cli11/2.4.2
+fmt/11.1.1
+catch2/2.13.7
+
+[generators]
+CMakeDeps
+CMakeToolchain
