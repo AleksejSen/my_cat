@@ -7,13 +7,23 @@
 #include <vector>
 
 namespace Color {
-  const std::string red("\033[0;31m");
-  const std::string green("\033[1;32m");
-  const std::string yellow("\033[1;33m");
-  const std::string cyan("\033[0;36m");
-  const std::string magenta("\033[0;35m");
+  // ANSI escape codes for colors
   const std::string reset("\033[0m");
+  const std::string red("\033[0;31m");           // Red
+  const std::string green("\033[1;32m");         // Green
+  const std::string yellow("\033[1;33m");        // Yellow
+  const std::string blue("\033[1;34m");          // Blue
+  const std::string magenta("\033[0;35m");       // Magenta
+  const std::string cyan("\033[0;36m");          // Cyan
+  const std::string white("\033[1;37m");         // White
 } // namespace Color
+
+const std::string bracesColor = Color::cyan;
+const std::string curlyBracesColor = Color::yellow;
+const std::string squareBracesColor = Color::red;
+const std::string punctuationColor = Color::green;
+const std::string textColor = Color::white;
+const std::string quotesColor = Color::blue;
 
 std::vector<std::string>
 readFilesToVector(const std::filesystem::path &filePath) {
@@ -38,13 +48,40 @@ void outputLines(std::vector<std::string> lines, bool printLineNr) {
   if (printLineNr) {
     int line_nr = 1;
     for (auto &&line : lines) {
-      //Line Numbers
+      // Line Numbers
       fmt::print("{}{}|", Color::cyan, line_nr);
 
-      //Test TODO: add more fancy coloring
-      fmt::print("{}{}",  Color::magenta, line);
+      // Print with fancy coloring
+      for (auto &&ch : line) {
+        switch (ch) {
+        case '.':
+        case ',':
+        case ':':
+        case ';':
+          fmt::print("{}{}{}", punctuationColor, ch, Color::reset);
+          break;
+        case '{':
+        case '}':
+          fmt::print("{}{}{}", curlyBracesColor, ch, Color::reset);
+          break;
+        case '[':
+        case ']':
+          fmt::print("{}{}{}", squareBracesColor, ch, Color::reset);
+          break;
+        case '(':
+        case ')':
+          fmt::print("{}{}{}", bracesColor, ch, Color::reset);
+          break;
+        case '"':
+          fmt::print("{}{}{}", quotesColor, ch, Color::reset);
+          break;
+        default:
+          fmt::print("{}{}{}", textColor, ch, Color::reset);
+          break;
+        }
+      }
 
-      //Reset Colors
+      // Reset Colors
       fmt::print("{}\n", Color::reset);
       ++line_nr;
     }
